@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agente de Reunião com Comprador · AXIA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300..650;1,9..144,300..650&display=swap');
+
+  :root{
+    --paper:#FCFAF5; --bone-50:#F8F5EE; --bone-100:#F1ECE1;
+    --ink-900:#0A1020; --ink-950:#05080F; --ink-850:#0D1526; --ink-800:#121B30; --ink-700:#1B2740;
+    --gold:#C9A24B; --gold-bright:#E3C377; --gold-deep:#7E6225; --gold-soft:rgba(201,162,75,.14);
+    --txt-dark:#EFEBE1; --txt-dark-muted:#A9B0C0;
+    --txt-light:#1A2233; --txt-light-muted:#525D74;
+    --line-l:rgba(26,34,51,.13); --line-d:rgba(239,235,225,.12);
+    --display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper); color:var(--txt-light); font-family:var(--sans); line-height:1.65; font-size:16px; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px; margin:0 auto; padding:0 0 40px;}
+
+  .hero{position:relative; overflow:hidden; background:var(--ink-950); padding:38px 24px 44px;}
+  .hero-map{position:absolute; top:0; right:-40px; width:520px; max-width:70%; height:auto; opacity:.6; pointer-events:none;}
+  .hero-top{display:flex; align-items:center; gap:10px; margin-bottom:34px; position:relative; z-index:1;}
+  .hero-top .logo-mark{width:30px; height:25px; display:block;}
+  .hero-top .logo-word{font-family:var(--sans); font-weight:700; font-size:15px; letter-spacing:.14em; color:var(--txt-dark);}
+  .hero-top .logo-word sup{color:var(--gold); font-size:9px;}
+  .hero-grid{display:flex; align-items:flex-end; gap:24px; position:relative; z-index:1;}
+  .hero-copy{flex:1; min-width:0;}
+  .hero-eyebrow{display:flex; align-items:center; gap:8px; font-family:var(--sans); font-weight:600; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--txt-dark-muted); margin-bottom:16px;}
+  .hero-eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+  .hero h1{font-family:var(--display); font-size:clamp(28px,5.6vw,40px); line-height:1.14; margin:0 0 16px; font-weight:600; letter-spacing:-.005em; color:var(--txt-dark);}
+  .hero h1 .accent{color:var(--gold-bright);}
+  .hero-sub{font-size:16.5px; color:var(--txt-dark-muted); max-width:48ch; margin:0;}
+  .compass-art{flex-shrink:0; width:130px; height:auto;}
+  @media (max-width:620px){ .hero-grid{flex-direction:column; align-items:stretch;} .compass-art{width:100px; align-self:flex-end;} .hero-map{opacity:.4;} }
+
+  .inner{padding:0 24px;}
+
+  .eyebrow{display:flex; align-items:center; gap:8px; font-family:var(--sans); font-weight:600; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-deep); margin:36px 0 14px;}
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+
+  .lede{font-size:17.5px; color:var(--txt-light-muted); max-width:62ch; margin:0 0 40px;}
+  .lede strong{color:var(--txt-light); font-weight:700;}
+
+  .toc{background:var(--bone-50); border:1px solid var(--line-l); border-radius:12px; padding:22px 24px; margin-bottom:52px;}
+  .toc-title{font-family:var(--sans); font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--txt-light-muted); margin-bottom:14px;}
+  .toc ol{list-style:none; margin:0; padding:0; counter-reset:toc;}
+  .toc li{counter-increment:toc; display:flex; gap:12px; padding:9px 0; border-bottom:1px solid var(--line-l); font-size:14.5px;}
+  .toc li:last-child{border-bottom:none;}
+  .toc li::before{content:counter(toc,decimal-leading-zero); font-family:var(--sans); color:var(--gold-deep); font-size:13px; font-weight:700;}
+  .toc a{color:var(--txt-light); text-decoration:none; font-weight:500;}
+  .toc a:hover{color:var(--gold-deep);}
+
+  .part{margin:64px 0;}
+  .part-tag{font-family:var(--sans); font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:10px;}
+  h2{font-family:var(--display); font-size:26px; margin:0 0 20px; font-weight:600; letter-spacing:-.005em; color:var(--txt-light);}
+  p{margin:0 0 16px; color:var(--txt-light-muted);}
+  strong{color:var(--txt-light);}
+  .accent{color:var(--gold-deep);}
+
+  .stat-big{background:var(--bone-50); border:1px solid var(--line-l); border-radius:12px; padding:24px 22px; margin:24px 0; display:flex; align-items:center; gap:20px;}
+  .stat-big b{font-family:var(--display); font-size:34px; font-weight:600; color:var(--gold-deep); white-space:nowrap;}
+  .stat-big span{font-size:14px; color:var(--txt-light-muted); line-height:1.5;}
+  @media (max-width:560px){ .stat-big{flex-direction:column; align-items:flex-start; gap:8px;} }
+
+  .icon-row{display:flex; gap:0; margin:26px 0; background:var(--bone-50); border:1px solid var(--line-l); border-radius:12px; padding:20px 8px;}
+  .icon-item{flex:1; display:flex; flex-direction:column; align-items:flex-start; gap:8px; padding:0 16px; border-left:1px solid var(--line-l);}
+  .icon-item:first-child{border-left:none;}
+  .icon-item svg{width:26px; height:26px; stroke:var(--gold-deep); flex-shrink:0;}
+  .icon-item span{font-size:13px; color:var(--txt-light-muted); line-height:1.4;}
+  @media (max-width:560px){ .icon-row{flex-direction:column; gap:16px;} .icon-item{border-left:none; border-top:1px solid var(--line-l); padding-top:14px;} .icon-item:first-child{border-top:none; padding-top:0;} }
+
+  .tip{border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:0 10px 10px 0; padding:14px 18px; margin:20px 0; font-size:14.5px; color:var(--txt-light);}
+
+  /* comparador de mercados */
+  .market-card{background:var(--bone-50); border:1px solid var(--line-l); border-radius:14px; padding:22px 20px; margin:20px 0;}
+  .market-card-head{display:flex; align-items:center; gap:10px; margin-bottom:16px;}
+  .market-card-head .m-letter{width:28px; height:28px; border-radius:50%; background:var(--ink-900); color:var(--gold-bright); font-family:var(--display); font-weight:600; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .market-card-head input[type=text]{flex:1; border:1px solid var(--line-l); background:var(--paper); border-radius:8px; padding:10px 12px; font-family:var(--sans); font-size:15px; font-weight:600; color:var(--txt-light);}
+  .market-card-head input[type=text]:focus{outline:none; border-color:var(--gold);}
+  .crit{padding:14px 0; border-bottom:1px solid var(--line-l);}
+  .crit:last-of-type{border-bottom:none;}
+  .crit-label{font-size:14px; font-weight:700; color:var(--txt-light); margin-bottom:10px;}
+  .crit-opts{display:flex; gap:8px;}
+  .crit-opt{flex:1; text-align:center; padding:9px 6px; border-radius:8px; border:1px solid var(--line-l); background:var(--paper); cursor:pointer; font-size:12.5px; color:var(--txt-light-muted); transition:background .15s,border-color .15s;}
+  .crit-opt input{display:none;}
+  .crit-opt.checked{background:var(--gold-soft); border-color:var(--gold); color:var(--txt-light); font-weight:600;}
+  @media (max-width:480px){ .crit-opts{flex-direction:column;} }
+
+  .ranking{position:sticky; bottom:16px; margin-top:28px; background:var(--ink-900); border-radius:14px; padding:22px 22px 20px; color:var(--txt-dark);}
+  .ranking-label{font-family:var(--sans); font-weight:600; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--txt-dark-muted); margin-bottom:14px;}
+  .rank-row{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+  .rank-pos{font-family:var(--display); font-size:15px; color:var(--gold-bright); font-weight:600; width:20px; flex-shrink:0;}
+  .rank-name{font-size:13.5px; font-weight:600; width:88px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rank-bar-bg{flex:1; height:8px; background:var(--ink-700); border-radius:4px; overflow:hidden;}
+  .rank-bar-fill{height:100%; background:var(--gold); border-radius:4px; transition:width .25s ease; width:0%;}
+  .rank-score{font-family:var(--sans); font-size:13px; font-weight:700; color:var(--gold-bright); width:38px; text-align:right; flex-shrink:0;}
+  .ranking-sub{font-size:13px; color:var(--txt-dark-muted); margin-top:10px;}
+
+  .incoterm-note{font-size:13px; color:var(--txt-light-muted); margin-top:6px;}
+
+  .cta{margin-top:72px; background:var(--ink-950); border-radius:16px; padding:34px 30px; display:flex; gap:22px; align-items:center;}
+  .cta img.avatar{width:88px; height:88px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid var(--gold);}
+  .cta-body h3{font-family:var(--display); margin:0 0 8px; font-size:19px; font-weight:600; color:var(--txt-dark);}
+  .cta-body p{font-size:14.5px; color:var(--txt-dark-muted); margin:0 0 16px;}
+  .btn{display:inline-flex; align-items:center; gap:8px; background:var(--gold); color:var(--ink-950); font-weight:700; font-size:14.5px; padding:12px 22px; border-radius:999px; text-decoration:none;}
+  .btn::before{content:''; width:8px; height:8px; border-radius:50%; background:var(--ink-950);}
+  .ps{font-style:italic; color:var(--txt-dark-muted); font-size:13px; margin-top:14px;}
+  @media (max-width:560px){ .cta{flex-direction:column; align-items:flex-start;} }
+
+  footer{display:flex; justify-content:space-between; align-items:center; margin-top:48px; padding-top:20px; border-top:1px solid var(--line-l); font-family:var(--sans); font-weight:600; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--txt-light-muted);}
+
+  .quiz{background:var(--bone-50); border:1px solid var(--line-l); border-radius:14px; padding:22px 20px; margin:0 0 40px;}
+  .quiz-tag{font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-deep); margin-bottom:10px;}
+  .quiz-q{font-size:15.5px; font-weight:600; color:var(--txt-light); margin-bottom:14px;}
+  .quiz .crit-opts{flex-direction:column;}
+  .quiz-out{display:none; margin-top:14px; border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:0 10px 10px 0; padding:12px 16px; font-size:14.5px; color:var(--txt-light);}
+  ul.checks{list-style:none; margin:18px 0; padding:0;}
+  ul.checks li{position:relative; padding:9px 0 9px 30px; border-bottom:1px solid var(--line-l); font-size:15px; color:var(--txt-light-muted);}
+  ul.checks li:last-child{border-bottom:none;}
+  ul.checks li::before{content:''; position:absolute; left:2px; top:14px; width:14px; height:14px; border-radius:50%; background:var(--gold);}
+  ul.checks li::after{content:''; position:absolute; left:6px; top:17px; width:4px; height:7px; border:solid var(--ink-950); border-width:0 2px 2px 0; transform:rotate(45deg);}
+  .icon-item b{color:var(--txt-light); display:block; margin-bottom:2px; font-size:13px;}
+  ol.steps{list-style:none; counter-reset:st; margin:20px 0; padding:0;}
+  ol.steps li{counter-increment:st; display:flex; flex-direction:column; gap:2px; position:relative; padding:14px 16px 14px 56px; background:var(--bone-50); border:1px solid var(--line-l); border-radius:12px; margin-bottom:10px;}
+  ol.steps li::before{content:counter(st); position:absolute; left:16px; top:14px; width:28px; height:28px; border-radius:50%; background:var(--ink-900); color:var(--gold-bright); font-family:var(--display); font-weight:600; display:flex; align-items:center; justify-content:center;}
+  ol.steps b{color:var(--txt-light); font-size:15px;}
+  ol.steps span{font-size:14px; color:var(--txt-light-muted);}
+  .tbl-wrap{overflow-x:auto; margin:18px 0 22px; border:1px solid var(--line-l); border-radius:12px; background:var(--bone-50);}
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  th{text-align:left; font-weight:600; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--txt-light-muted); padding:12px 14px; border-bottom:1px solid var(--line-l);}
+  td{padding:11px 14px; border-bottom:1px solid var(--line-l); color:var(--txt-light-muted); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td:first-child{color:var(--txt-light); white-space:nowrap; font-weight:500;}
+  @media (max-width:560px){ td:first-child{white-space:normal;} }
+  .prompt-box{background:var(--ink-900); border-radius:14px; margin:22px 0; overflow:hidden;}
+  .prompt-head{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; background:var(--ink-950); font-weight:600; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--txt-dark-muted);}
+  .copy-btn{background:var(--gold); color:var(--ink-950); border:0; border-radius:999px; padding:8px 18px; font-family:var(--sans); font-weight:700; font-size:13px; cursor:pointer; flex-shrink:0;}
+  .copy-btn:hover{background:var(--gold-bright);}
+  .prompt-box pre{margin:0; padding:18px 16px; max-height:340px; overflow:auto; white-space:pre-wrap; word-break:break-word; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; line-height:1.6; color:var(--txt-dark);}
+  ul.src{margin:10px 0 0; padding-left:18px; font-size:13.5px; color:var(--txt-light-muted);}
+  ul.src li{margin-bottom:4px;}
+  .src-note{font-size:12.5px; color:var(--txt-light-muted); margin-top:12px;}
+  .aud{font-family:var(--display); font-size:19px; line-height:1.4; color:var(--txt-light); margin:36px 0 14px; padding-left:16px; border-left:3px solid var(--gold);}
+  .sop{margin:40px 0 0; background:var(--ink-900); border-radius:14px; padding:22px 24px;}
+  .sop-tag{font-weight:600; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-bright); margin-bottom:8px;}
+  .sop p{margin:0; color:var(--txt-dark-muted); font-size:14.5px;}
+  .chk-list{margin:16px 0;}
+  .chk{display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border:1px solid var(--line-l); background:var(--bone-50); border-radius:10px; margin-bottom:8px; cursor:pointer; font-size:14.5px; color:var(--txt-light);}
+  .chk input{margin-top:3px; accent-color:var(--gold-deep); width:16px; height:16px; flex-shrink:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <svg class="hero-map" viewBox="0 0 520 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="#1B2740" stroke-width="1">
+        <path d="M40 220 Q160 60 300 110 T480 60" stroke-dasharray="3 6"/>
+        <path d="M60 240 Q220 140 340 190 T500 130" stroke-dasharray="3 6"/>
+      </g>
+      <g fill="#C9A24B">
+        <circle cx="40" cy="220" r="3.5"/><circle cx="300" cy="110" r="3.5"/><circle cx="480" cy="60" r="3.5"/><circle cx="340" cy="190" r="3.5"/><circle cx="500" cy="130" r="3.5"/>
+      </g>
+    </svg>
+    <div class="hero-top">
+      <svg class="logo-mark" viewBox="140 100 740 605" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#E3C377" d="M283 393 L401 117 L472 290 L441 393 Z"/>
+        <path fill="#C9A24B" d="M424 117 L594 117 L866 690 L697 690 Z"/>
+        <path fill="#B08D3C" d="M267 413 L556 413 L622 551 L363 551 L311 690 L155 690 Z"/>
+      </svg>
+      <span class="logo-word">AXIA<sup>®</sup></span>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-eyebrow"><span class="dot"></span>Material gratuito · Agente de IA</div>
+        <h1>A reunião com o comprador acabou. <span class="accent">O difícil é o que acontece depois.</span></h1>
+        <p class="hero-sub">Um agente de IA que prepara a reunião, transforma as anotações em ata e tarefas e mostra onde a conversa perdeu informação.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner">
+  <p class="aud">Para diretores comerciais e gestores de negócios internacionais que conduzem reuniões com compradores fora do Brasil.</p>
+  <p class="lede">Aqui está o agente pronto para colar no <strong>Claude ou no ChatGPT</strong>, mais um modelo de anotação para usar durante a reunião. Funciona em dois modos: <strong>antes</strong> e <strong>depois</strong>.</p>
+  <div class="tip">O agente só trabalha com o que você escrever ou colar, e tudo o que ele redige em nome da sua empresa é rascunho. Não cole dado confidencial de terceiros e leia o follow-up antes de enviar.</div>
+
+  <div class="quiz" id="quiz">
+    <div class="quiz-tag">Teste de 1 minuto</div>
+    <div class="quiz-q">Depois da última reunião com um comprador, quanto tempo levou para o resumo e as tarefas chegarem por escrito?</div>
+    <div class="crit-opts"><div class="crit-opt"><span>No mesmo dia, com responsável e prazo</span></div><div class="crit-opt"><span>Alguns dias, a partir da memória</span></div><div class="crit-opt"><span>Não cheguei a enviar</span></div></div>
+    <div class="quiz-out" id="quizOut"></div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Neste material</div>
+    <ol><li><a href="#parte01">Antes, durante e depois</a></li><li><a href="#parte02">Monte o seu em 3 passos</a></li><li><a href="#parte03">Revise antes de enviar</a></li></ol>
+  </div>
+
+  <div class="part" id="parte01"><div class="part-tag">Parte 01</div><h2><span class="accent">Antes, durante e depois</span></h2><p>Cada momento da reunião perde um tipo diferente de informação. O agente cobre o antes e o depois; o durante é seu, com um modelo de anotação.</p><div class="icon-row"><div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span><b>Antes:</b> o agente monta o roteiro, as perguntas que você faz e as que o comprador fará.</span></div><div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span><b>Durante:</b> você anota no modelo abaixo, em vez de depender da memória.</span></div><div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg><span><b>Depois:</b> o agente organiza a ata, as tarefas e o follow-up em rascunho.</span></div></div><ul class="checks"><li><strong>Ata</strong> com o que foi decidido, e só o que foi dito</li><li><strong>Tarefas</strong> com responsável e prazo, marcando as que ficaram “sem dono”</li><li><strong>Perguntas do comprador</strong> que ficaram sem resposta</li><li><strong>Sinais</strong> de interesse e de risco, com o trecho que os mostra</li><li><strong>Follow-up</strong> em rascunho, no idioma da reunião</li><li><strong>Relatório de vazamento</strong>: onde a reunião perdeu informação e a primeira ação para evitar</li></ul></div>
+  <div class="part" id="parte02"><div class="part-tag">Parte 02</div><h2>Monte o seu em <span class="accent">3 passos</span></h2><ol class="steps"><li><b>Copie o agente</b><span>Botão abaixo.</span></li><li><b>Abra uma conversa nova</b><span>No Claude ou no ChatGPT. A versão gratuita serve.</span></li><li><b>Diga o modo</b><span>Escreva “modo antes” para preparar, ou “modo depois” e cole as anotações da reunião.</span></li></ol><div class="prompt-box">
+  <div class="prompt-head"><span>Agente REUNIÃO · copie e cole</span><button class="copy-btn" type="button" data-target="prompt">Copiar</button></div>
+  <pre id="prompt">Você é meu assistente de reuniões com compradores estrangeiros. Trabalha em dois modos: ANTES e DEPOIS. Eu digo qual quero.
+
+MEU CONTEXTO (troque os colchetes):
+- Meu produto: [o que você vende, em uma linha]
+- Minha empresa: [cidade/estado, porte, em 2 linhas]
+- Comprador: [empresa ou tipo de comprador, país]
+- Objetivo da reunião: [ex.: apresentar o produto, negociar o 1º pedido, resolver pendência de preço]
+- Idioma da reunião: [inglês | espanhol | português]
+
+REGRAS QUE VOCÊ NÃO QUEBRA
+- Trabalhe SÓ com o que eu escrever ou colar. Nunca complete com o que &quot;provavelmente&quot; foi dito.
+- Se uma informação não aparece nas minhas anotações, escreva &quot;não foi dito&quot;. Não preencha.
+- Não invente preço, prazo, norma, tarifa ou compromisso.
+- Se eu colar dado sensível (senha, dado pessoal, informação de terceiros), avise e peça para eu retirar.
+- Tudo que for escrito em nome da minha empresa é RASCUNHO para eu revisar.
+
+MODO ANTES (quando eu disser &quot;modo antes&quot;)
+Entregue:
+1. Roteiro da reunião em 5 a 7 tópicos, na ordem em que eu deveria conduzir.
+2. As 8 perguntas mais importantes que EU devo fazer ao comprador.
+3. As 5 perguntas que o comprador provavelmente fará a mim e o que eu preciso ter em mãos (número, documento) para responder.
+4. O que levar: lista de documentos e informações.
+5. O que NÃO prometer na primeira reunião.
+Marque como &quot;hipótese&quot; tudo que for suposição sobre o comprador.
+
+MODO DEPOIS (quando eu disser &quot;modo depois&quot; e colar as anotações ou a transcrição)
+Entregue, nesta ordem:
+1. ATA: o que foi decidido, em frases curtas. Só o que está nas anotações.
+2. TAREFAS: tabela com tarefa, responsável (nós ou o comprador) e prazo. Se faltar responsável ou prazo, escreva &quot;SEM DONO&quot; ou &quot;SEM PRAZO&quot;.
+3. PERGUNTAS SEM RESPOSTA: o que o comprador perguntou e eu não respondi, ou respondi de forma vaga.
+4. SINAIS: o que indicou interesse e o que indicou risco ou resistência, citando o trecho das anotações.
+5. FOLLOWUP: rascunho de e-mail no idioma da reunião, objetivo e curto, com as tarefas e prazos combinados. Marque com [CONFERIR] qualquer item que eu precise validar antes de enviar.
+6. REGISTRO PARA O CRM: nome do contato, empresa, estágio sugerido, próximo passo e data.
+7. RELATÓRIO DE VAZAMENTO: onde esta reunião perdeu informação (tarefas sem dono, sem prazo, perguntas sem resposta, compromissos vagos). Termine com a primeira ação para evitar o mesmo na próxima reunião.
+
+Comece perguntando qual modo eu quero. Se algum campo do contexto estiver vazio, pergunte antes.</pre>
+</div><p>Para o <strong>durante</strong>, use este modelo. Quem anota nesses campos entrega ao agente anotações que ele consegue organizar.</p><div class="prompt-box">
+  <div class="prompt-head"><span>Modelo de anotação · para usar na reunião</span><button class="copy-btn" type="button" data-target="notas">Copiar</button></div>
+  <pre id="notas">REUNIÃO COM COMPRADOR · anotações
+Data:
+Participantes (nome, empresa, cargo):
+Objetivo combinado:
+
+O que o comprador pediu:
+-
+Números falados (volume, preço, prazo, condição de pagamento):
+-
+Perguntas do comprador que eu NÃO respondi na hora:
+-
+Compromissos (quem faz o quê, até quando):
+-
+Pontos de resistência ou dúvida:
+-
+Próximo passo combinado (e data):
+-</pre>
+</div></div>
+  <div class="part" id="parte03"><div class="part-tag">Parte 03</div><h2>Revise <span class="accent">antes de enviar</span></h2><p>O agente escreve rascunho; quem responde ao comprador é você. Cinco conferências rápidas antes de enviar o follow-up:</p><ul class="checks"><li>Cada compromisso que está no e-mail foi mesmo combinado na reunião?</li><li>Os números (volume, preço, prazo) batem com as suas anotações?</li><li>Tudo marcado com [CONFERIR] foi validado?</li><li>As tarefas “SEM DONO” ou “SEM PRAZO” agora têm dono e prazo?</li><li>Nada do que você prometeu foge do que a empresa consegue cumprir?</li></ul><div class="tip">O relatório de vazamento é a parte mais útil: ele mostra o padrão da sua reunião. Se a mesma falha aparece duas vezes, o problema é o processo, e não a reunião.</div></div>
+
+  <!-- LIBERAR COM O LEANDRO: citar o SOP abaixo depende de ele confirmar o que dos manuais internos pode ser público -->
+  <div class="sop"><div class="sop-tag">Na metodologia AXIA · SOP 8 · Gestão do Pipeline</div><p>Na gestão de pipeline da AXIA, cada reunião vira ata e atualiza o funil. Sem registro, a negociação anda sem rastro. Este agente leva essa disciplina para a sua rotina.</p></div>
+
+  <div class="part" style="margin:48px 0 0">
+    <div class="part-tag">Fontes e limites</div>
+    <p style="margin-bottom:6px">Onde confirmar o que o agente apontar:</p>
+    <ul class="src"><li>Anotações da própria reunião: a única fonte que o agente usa</li><li>Portal Único Siscomex · dúvidas de documentação que surgirem na conversa</li></ul>
+    <p class="src-note">Informação geral, não substitui consultoria jurídica ou aduaneira. O agente de IA pode errar: confira sempre na fonte oficial antes de decidir.</p>
+  </div>
+
+  <div class="cta">
+    <img class="avatar" src="leandro-pietro.png" alt="Leandro Di Pietro">
+    <div class="cta-body">
+      <h3>Leandro Di Pietro — AXIA</h3>
+      <p>Se a reunião com compradores é um ponto onde a sua empresa perde informação, vale olhar o processo comercial internacional inteiro, do primeiro contato ao pedido. Podemos conversar sobre o seu caso.</p>
+      <a class="btn" href="https://cal.com/leandro-di-pietro/60min" target="_blank" rel="noopener">Marcar uma conversa com o Leandro</a>
+    </div>
+  </div>
+
+  <footer><span>AXIA</span><span>Internacionalização e estruturação comercial B2B</span></footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  var opts = ["Você já tem o hábito. O agente reduz o tempo e aponta o que escapou.", "É onde a informação mais vaza: o que foi dito vira o que você lembra. O agente trabalha a partir das anotações.", "Então o próximo passo combinado ficou só na cabeça de cada lado. É o ponto que o relatório de vazamento mostra."];
+  var out = document.getElementById('quizOut');
+  document.querySelectorAll('#quiz .crit-opt').forEach(function(el, i){
+    el.addEventListener('click', function(){
+      document.querySelectorAll('#quiz .crit-opt').forEach(function(o){ o.classList.remove('checked'); });
+      el.classList.add('checked');
+      out.style.display = 'block';
+      out.textContent = opts[i];
+    });
+  });
+  document.querySelectorAll('.copy-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var t = document.getElementById(b.getAttribute('data-target')).textContent;
+      function ok(){ var o=b.textContent; b.textContent='Copiado ✓'; setTimeout(function(){ b.textContent=o; }, 1800); }
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(ok, fallback);
+      } else { fallback(); }
+      function fallback(){
+        var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); ok(); }catch(e){}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+  var chk = document.querySelectorAll('.chk input'), co = document.getElementById('chk-out');
+  if (chk.length && co){
+    chk.forEach(function(c){ c.addEventListener('change', function(){
+      var n = 0; chk.forEach(function(x){ if(x.checked) n++; });
+      var miss = chk.length - n;
+      co.style.display = 'block';
+      co.textContent = miss === 0 ? 'Os quatro estão em dia. Antes de enviar, confira se cada campo da ficha bate com o produto.' : (miss + (miss === 1 ? ' item ainda falta' : ' itens ainda faltam') + ' antes de a sua documentação estar pronta para um comprador.');
+    }); });
+  }
+})();
+</script>
+</body>
+</html>
